@@ -1,0 +1,424 @@
+# config/doctrine/schema.yml
+#
+# Configuración para symfony del esquema de la base de datos de la aplicación
+---
+Credenciales:
+  tableName: colora_credenciales
+  columns:
+    idCredenciales:
+      type: integer
+      primary: true
+    usuario:
+      type: string(255)
+      minlength: 8
+    password:
+      type: string(255)
+      minlength: 8
+      
+Cliente:
+  actAs:  [Timestampable]     # Esto sustituye a la columna fechaAlta
+  tableName: colora_cliente
+  columns:
+    idCliente:                # columna idCliente
+      type: integer
+      primary: true
+    datosCliente:
+      type: integer
+      notnull: true
+    credenciales:
+      type: integer
+      notnull: true
+  relations:
+    Credenciales:
+      local: credenciales
+      foreign: idCredenciales
+      onDelete: CASCADE
+    DatosPersonales:
+      local: datosCliente
+      foreign: idDatosPersonales
+      onDelete: CASCADE
+
+DatosPersonales:
+  tableName: colora_datospersonales
+  columns:
+    idDatosPersonales:
+      type: integer
+      primary: true
+    nombre:                   # columna nombre
+      type: string(45)
+      notblank: true
+    apellido1:                 # columna apellido1
+      type: string(45)
+      notblank: true
+    apellido2:                 # columna apellido2
+      type: string(45)
+      notblank: true
+    nacionalidad:             # columna nacionalidad
+      type: string(2)
+      country: true
+      default: es            # ??????????????
+    dni_passport:            # columna dni_passport
+      type:  string(12)      # ????????????????
+      notblank: true
+    calle:                   # columna calle
+      type:  string(45)
+      notblank: true        # ?????????????
+    num_y_piso:            # columna num_y_piso
+      type:  string(10)
+      notblank: true        # ?????????????
+    Localidad:             # columna Localidad
+      type:  string(45)
+      notblank: true        # ?????????????
+    Provincia:             # columna codOfertaPersonalizada
+      type:  string(45)
+      notblank: yes        # ?????????????
+    telefono:              # columna telefono
+      type: integer
+      minlength: 9            # ?????????????
+      notnull: yes         # ???????????????
+    email:
+      type: string(255)
+      email: true
+
+Empleado:
+  actAs:  [Timestampable]     # Para saber cuando se crearon las reservas
+  tableName: colora_empleado
+  columns:
+    idEmpleado:                # columna idCliente
+      type: integer
+      primary: key
+    datosEmpleado:
+      type: integer
+      notnull: true
+    credenciales:
+      type: integer
+      notnull: true
+  relations:
+    Cliente:
+      local: idCliente
+      foreign: idCliente
+      onDelete: SET NULL
+    Persona:
+      local: realizada_por
+      foreign: idPersona
+  relations:
+    Credenciales:
+      local: credenciales
+      foreign: idCredenciales
+      onDelete: CASCADE
+    DatosPersonales:
+      local: datosEmpleado
+      foreign: idDatosPersonales
+      onDelete: CASCADE
+
+
+Reserva:
+  actAs:  [Timestampable]
+  tableName: colora_reserva
+  columns:
+    idReserva:
+      type: integer
+      primary: true
+    cliente:
+      type: integer
+      notnull: true
+    importe:                 # columna importe
+      type: decimal(9)
+      scale: 2
+      notnull: true
+    fianzaDepositada:        # columna fianzaDepositada
+      type: decimal(9)
+      scale: 2
+      default: 0
+    fechaSalida:             # columna fechasalida
+      type:  timestamp
+      notnull: true
+    fechaLlegada:            # columna fechaLlegada
+      type:  timestamp
+      notnull: true
+    estado:
+      type:  enum             #??????????????????????????
+      values: [o, l, p]
+      notnull: true
+    codOfertaTemporada:      # columna codOfertaTemporada
+      type:  integer
+      fixed: yes
+      default: 0      # ????????????
+    codOfertaPersonalizada:    # columna codOfertaPersonalizada
+      type:  string(45)
+      fixed: yes
+      notnull: true
+    realizada_por:
+      type: integer
+      notnull: true
+  relations:
+    Cliente:
+      local: cliente
+      foreign: idCliente
+      onDelete: CASCADE
+    DatosPersonales:
+      local: realizada_por
+      foreign: idDatosPersonales
+      onDelete: CASCADE
+    OfertaTemporada:
+      local: codOfertaTemporada
+      foreign: idOfertaTemporada
+      onDelete: CASCADE
+    OfertaPersonalizada:
+      local: codOfertaPersonalizada
+      foreign: idOfertaPersonalizada
+      onDelete: CASCADE
+    Reservas:
+      class: Alojamiento
+      local: idReserva
+      foreign: idAlojamiento
+      refClass: ReservaTieneAlojamiento
+
+
+OfertaTemporada:
+  actAs:  [Timestampable]
+  tableName: colora_ofertatemporada
+  columns:
+    idOfertaTemporada:
+      type: integer
+      primary: true
+    fechaInicio:
+      type: timestamp
+      notnull: true
+    fechaFin:
+      type: timestamp
+      notnull: true
+    codGerente:
+      type: integer
+      notnull: true
+    dtoPorcentual:
+      type: decimal(5)
+      scale: 2
+      default: 0
+    dtoFijo:
+      type: decimal(5)
+      scale: 2
+      default: 0
+    descripcion:
+      type: string(255)
+      default: sin descripcion
+    noCobrarExtra1:
+      type: boolean
+      notnull: true
+    noCobrarExtra2:
+      type: boolean
+      notnull: true
+    techoDto:
+      type: decimal(5)
+      scale: 2
+      default: 0
+  relations:
+    Empleado:
+      local: codGerente
+      foreign: idEmpleado
+      onDelete: CASCADE
+
+
+OfertaPersonalizada:
+  actAs:  [Timestampable]
+  tableName: colora_ofertapersonalizada
+  columns:
+    idOfertaPersonalizada:
+      type: string(45)
+      primary: yes
+    fechaInicio:
+      type: timestamp
+      notnull: true
+    fechaFin:
+      type: timestamp
+      notnull: true
+    codCliente:
+      type: integer
+      notnull: true
+    codGerente:
+      type: integer
+      notnull: true
+    dtoPorcentual:
+      type: decimal(5)
+      scale: 2
+      default: 0.0
+    dtoFijo:
+      type: decimal(5)
+      scale: 2
+      default: 0.0
+    descripcion:
+      type: string(255)
+      default: sin descripcion
+    noCobrarExtra1:
+      type: boolean
+      notnull: true
+    noCobrarExtra2:
+      type: boolean
+      notnull: true
+    techoDto:
+      type: decimal(5)
+      scale: 2
+      default: 0.0
+  relations:
+    Empleado:
+      local: codGerente
+      foreign: idEmpleado
+      onDelete: CASCADE
+    Cliente:
+      local: codCliente
+      foreign: idCliente
+      onDelete: CASCADE
+      
+
+Alojamiento:
+  tableName: colora_alojamiento
+  columns:
+    idAlojamiento:
+      type: integer
+      primary: yes
+    nombre:
+      type: string(45)
+      minlength: 5
+    precioBase:
+      type: decimal(6)
+      scale: 2
+    subalojamiento:
+      type: integer
+      notnull: true
+    minPlazas:
+      type: integer
+      notnull: true
+    maxPlazas:
+      type: integer
+      notnull: true
+    idEmpresa:
+      type: integer
+      notnull: true
+  relations:
+    Reservados:
+      class: Reserva
+      local: idAlojamiento
+      foreign: idReserva
+      refClass: ReservaTieneAlojamiento
+    Parientes:
+      class: Alojamiento
+      local: subalojamiento
+      foreign: idAlojamiento
+      foreignAlias: SubAlojamientos
+    Empresa:
+      local: idEmpresa
+      foreign: idEmpresa
+      onDelete: CASCADE
+
+
+
+
+
+ReservaTieneAlojamiento:
+  columns:
+    idAlojamiento:
+      type: integer
+      primary: true
+    idReserva:
+      type: integer
+      primary: true
+
+Empresa:
+  tableName: colora_empresa
+  columns:
+    idEmpresa:
+      type: integer
+      primary: true
+    razonSocial:
+      type: string(255)
+      notblank: true
+    cif_nif:
+      type: varchar(9)
+      notblank: true
+      nospace: true
+    dirección:
+      type: string(100)
+      notblank: true
+    telefono:
+      type: string(12)
+      minlength: 9
+    email:
+      type: string(255)
+      email: true
+    gerente:
+      type: string(100)
+
+
+Factura:
+  actAs:  [Timestampable]
+  tableName: colora_factura
+  columns:
+    idFactura:
+      type: integer
+      primary: true
+    idEmpresa:
+      type: integer
+      notnull: true
+    fecha:
+      type: timestamp
+      past: true
+      notnull: true
+    idReserva:
+      type: integer
+      notnull: true
+    medioPago:
+      type: string(1)
+      notnull: true
+    numTarjeta:
+      type: integer
+      notnull: true
+    tipoTarjeta:
+      type: string(15)
+      notnull: true
+    fechaCadTarjeta:
+      type: date
+      future: yes
+      notnull: true
+  relations:
+    Empresa:
+      local: idEmpresa
+      foreign: idEmpresa
+      onDelete: CASCADE
+    Reserva:
+      local: idReserva
+      foreign: idReserva
+      onDelete: CASCADE
+
+
+Tarifa:
+  tableName: colora_tarifa
+  columns:
+    idTarifa:
+      type: integer
+      primary: true
+    idAlojamiento:
+      type: integer
+      notnull: true
+      unique: true
+    fechaInicio:
+      type: date
+      notnull: true
+    fechaFin:
+      type: date
+      notnull: true
+    precioBase:
+      type: decimal(8)
+      scale: 2
+    conceptoExtra1:
+      type: string(45) ############ ?????????' OBLIGATORIO UN VALOR?
+    precioExtra1:
+      type: string(45) ##############???????? OBLIGATORIO UN VALOR?
+    conceptoExtra2:
+      type: string(45) ############ ?????????' OBLIGATORIO UN VALOR?
+    precioExtra2:
+      type: string(45) ##############???????? OBLIGATORIO UN VALOR?
+  relations:
+    Alojamiento:
+      local: idAlojamiento
+      foreign: idAlojamiento
+      onDelete: CASCADE

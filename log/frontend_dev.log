@@ -1,0 +1,35 @@
+Jun 02 02:20:32 symfony [info] {sfPatternRouting} Match route "homepage" (/) for / with parameters array (  'module' => 'default',  'action' => 'index',)
+Jun 02 02:20:32 symfony [info] {sfFilterChain} Executing filter "sfRenderingFilter"
+Jun 02 02:20:32 symfony [info] {sfFilterChain} Executing filter "sfExecutionFilter"
+Jun 02 02:20:32 symfony [info] {defaultActions} Call "defaultActions->executeIndex()"
+Jun 02 02:20:32 symfony [info] {sfPHPView} Render "/home/marco/symfony-1.4.5/lib/controller/default/templates/indexSuccess.php"
+Jun 02 02:20:32 symfony [info] {sfPHPView} Decorate content with "/home/marco/symfony-1.4.5/lib/controller/default/templates/defaultLayout.php"
+Jun 02 02:20:32 symfony [info] {sfPHPView} Render "/home/marco/symfony-1.4.5/lib/controller/default/templates/defaultLayout.php"
+Jun 02 02:20:32 symfony [info] {sfWebResponse} Send status "HTTP/1.1 200 OK"
+Jun 02 02:20:32 symfony [info] {sfWebResponse} Send header "Content-Type: text/html; charset=utf-8"
+Jun 02 02:20:32 symfony [info] {sfWebDebugLogger} Configuration 55.69 ms (9)
+Jun 02 02:20:32 symfony [info] {sfWebDebugLogger} Factories 38.90 ms (1)
+Jun 02 02:20:32 symfony [info] {sfWebDebugLogger} Action "default/index" 0.08 ms (1)
+Jun 02 02:20:32 symfony [info] {sfWebDebugLogger} View "Success" for "default/index" 4.22 ms (1)
+Jun 02 02:20:32 symfony [info] {sfWebResponse} Send content (27999 o)
+Jun 02 19:46:20 symfony [info] {sfPatternRouting} Match route "homepage" (/) for / with parameters array (  'module' => 'default',  'action' => 'index',)
+Jun 02 19:46:21 symfony [info] {sfFilterChain} Executing filter "sfRenderingFilter"
+Jun 02 19:46:21 symfony [info] {sfFilterChain} Executing filter "sfExecutionFilter"
+Jun 02 19:46:21 symfony [info] {defaultActions} Call "defaultActions->executeIndex()"
+Jun 02 19:46:21 symfony [info] {sfPHPView} Render "/home/marco/symfony-1.4.5/lib/controller/default/templates/indexSuccess.php"
+Jun 02 19:46:21 symfony [info] {sfPHPView} Decorate content with "/home/marco/symfony-1.4.5/lib/controller/default/templates/defaultLayout.php"
+Jun 02 19:46:21 symfony [info] {sfPHPView} Render "/home/marco/symfony-1.4.5/lib/controller/default/templates/defaultLayout.php"
+Jun 02 19:46:21 symfony [info] {sfWebResponse} Send status "HTTP/1.1 200 OK"
+Jun 02 19:46:21 symfony [info] {sfWebResponse} Send header "Content-Type: text/html; charset=utf-8"
+Jun 02 19:46:21 symfony [info] {sfWebDebugLogger} Configuration 94.04 ms (9)
+Jun 02 19:46:21 symfony [info] {sfWebDebugLogger} Factories 466.01 ms (1)
+Jun 02 19:46:21 symfony [info] {sfWebDebugLogger} Action "default/index" 0.15 ms (1)
+Jun 02 19:46:21 symfony [info] {sfWebDebugLogger} View "Success" for "default/index" 102.78 ms (1)
+Jun 02 19:46:21 symfony [info] {sfWebResponse} Send content (27807 o)
+Jun 20 18:44:04 symfony [info] {sfPatternRouting} Match route "default_index" (/:module) for /job with parameters array (  'module' => 'job',  'action' => 'index',)
+Jun 20 18:44:05 symfony [info] {sfFrontWebController} Action "job/index" does not exist
+Jun 20 18:44:05 symfony [err] {sfError404Exception} Action "job/index" does not exist.
+Jun 20 18:44:05 symfony [info] {sfWebResponse} Send status "HTTP/1.1 404 Not Found"
+Jun 20 18:44:05 symfony [info] {sfWebResponse} Send header "Content-Type: text/html; charset=utf-8"
+Jun 20 18:44:05 symfony [info] {sfWebDebugLogger} Configuration 55.52 ms (5)
+Jun 20 18:44:05 symfony [info] {sfWebDebugLogger} Factories 432.15 ms (1)
